@@ -11,10 +11,16 @@ class Add(Resource):
     operand1 = args['operand1']
     operand2 = args['operand2']
 
-    return jsonify({'msg': operand1+operand2})
+    return jsonify({'result': operand1+operand2})
 
 
 class Sub(Resource):
   def get(self):
-    print("a")
-    return jsonify({'msg': 'sub'})
+    parser = reqparse.RequestParser(bundle_errors=True)
+    parser.add_argument('operand1', type=int, required=True, help='operand1 is required The detail error is{error_msg}')
+    parser.add_argument('operand2', type=int, required=True, help='operand2 is required. The detail error is {error_msg}')
+    args = parser.parse_args()
+
+    operand1 = args['operand1']
+    operand2 = args['operand2']
+    return jsonify({'result': operand1 - operand2})
